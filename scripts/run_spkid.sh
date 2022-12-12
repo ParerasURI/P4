@@ -92,7 +92,7 @@ compute_lpcc(){
     shift
     for filename in $(sort $*); do
         mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
-        EXEC="wav2lpcc 10 15 $db/$filename.wav $w/$FEAT/$filename.$FEAT"
+        EXEC="wav2lpcc 21 24 $db/$filename.wav $w/$FEAT/$filename.$FEAT"
         echo $EXEC && $EXEC || exit 1
     done
 }
@@ -102,7 +102,7 @@ compute_mfcc(){
     shift
     for filename in $(sort $*); do
         mkdir -p `dirname $w/$FEAT/$filename.$FEAT`
-        EXEC="wav2mfcc 12 20 $db/$filename.wav $w/$FEAT/$filename.$FEAT"
+        EXEC="wav2mfcc 16 25 $db/$filename.wav $w/$FEAT/$filename.$FEAT"
         echo $EXEC && $EXEC || exit 1
     done
 }
@@ -130,6 +130,7 @@ for cmd in $*; do
    if [[ $cmd == train ]]; then
        ## @file
        # \TODO
+       # \DONE
        # Select (or change) good parameters for gmm_train
        for dir in $db_devel/BLOCK*/SES* ; do
            name=${dir/*\/}
@@ -157,6 +158,7 @@ for cmd in $*; do
    elif [[ $cmd == trainworld ]]; then
        ## @file
        # \TODO
+       # \DONE
        # Implement 'trainworld' in order to get a Universal Background Model for speaker verification
        #
        # - The name of the world model will be used by gmm_verify in the 'verify' command below.
@@ -166,6 +168,7 @@ for cmd in $*; do
    elif [[ $cmd == verify ]]; then
        ## @file
        # \TODO 
+       # \DONE 
        # Implement 'verify' in order to perform speaker verification
        #
        # - The standard output of gmm_verify must be redirected to file $LOG_VERIF.
@@ -173,31 +176,35 @@ for cmd in $*; do
        #   * <code> gmm_verify ... > $LOG_VERIF </code>
        #   * <code> gmm_verify ... | tee $LOG_VERIF </code>
        EXEC="gmm_verify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm -w $world $lists/gmm.list $lists/verif/all.test $lists/verif/all.test.candidates"
-       echo $EXEC && $EXEC | tee $LOG_VERIF || exit 1
+       echo $EXEC && $EXEC | tee $TEMP_VERIF || exit 1
 
    elif [[ $cmd == verifyerr ]]; then
-       if [[ ! -s $LOG_VERIF ]] ; then
-          echo "ERROR: $LOG_VERIF not created"
+       if [[ ! -s $TEMP_VERIF ]] ; then
+          echo "ERROR: $TEMP_VERIF not created"
           exit 1
        fi
        # You can pass the threshold to spk_verif_score.pl or it computes the
        # best one for these particular results.
-       spk_verif_score $LOG_VERIF | tee -a $LOG_VERIF
+       spk_verif_score $TEMP_VERIF | tee -a $LOG_VERIF
 
    elif [[ $cmd == finalclass ]]; then
        ## @file
        # \TODO
+       # \DONE
        # Perform the final test on the speaker classification of the files in spk_ima/sr_test/spk_cls.
        # The list of users is the same as for the classification task. The list of files to be
        # recognized is lists/final/class.test
        #
        # El fichero con el resultado del reconocimiento debe llamarse $FINAL_CLASS, que deberá estar en el
        # directorio de la práctica (PAV/P4).
-       echo "To be implemented ..."
+       compute_$FEAT $db_test $lists/final/class.test
+       EXEC="gmm_classify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm $lists/gmm.list $lists/final/class.test"
+       echo $EXEC && $EXEC | tee $FINAL_CLASS || exit 1
    
    elif [[ $cmd == finalverif ]]; then
        ## @file
        # \TODO
+       # \DONE
        # Perform the final test on the speaker verification of the files in spk_ima/sr_test/spk_ver.
        # The list of legitimate users is lists/final/verif.users, the list of files to be verified
        # is lists/final/verif.test, and the list of users claimed by the test files is
@@ -212,7 +219,12 @@ for cmd in $*; do
        # candidato para la señal a verificar. En $FINAL_VERIF se pide que la tercera columna sea 1,
        # si se considera al candidato legítimo, o 0, si se considera impostor. Las instrucciones para
        # realizar este cambio de formato están en el enunciado de la práctica.
-       echo "To be implemented ..."
+       compute_$FEAT $db_test $lists/final/verif.test
+       EXEC="gmm_verify -d $w/$FEAT -e $FEAT -D $w/gmm/$FEAT -E gmm -w $world $lists/gmm.list $lists/final/verif.test $lists/final/verif.test.candidates"
+       echo $EXEC && $EXEC | tee $TEMP_VERIF || exit 1
+       perl -ane 'print "$F[0]\t$F[1]\t";
+       if ($F[2] > -2.0424784934324) {print "1\n"}
+       else {print "0\n"}' $TEMP_VERIF | tee $FINAL_VERIF
    
    # If the command is not recognize, check if it is the name
    # of a feature and a compute_$FEAT function exists.

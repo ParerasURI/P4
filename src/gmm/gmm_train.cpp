@@ -64,7 +64,7 @@ int main(int argc, const char *argv[])
 		case 2:
 			break;
 		default:
-			;
+			break;
 	}
 
 	/// \TODO Apply EM to estimate GMM parameters (complete the funcion in gmm.cpp)
