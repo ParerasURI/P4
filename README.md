@@ -78,11 +78,15 @@ Para calcular los coeficientes cepstrales en escala Mel (MFCC), de forma similar
 
 - Inserte una imagen mostrando la dependencia entre los coeficientes 2 y 3 de las tres parametrizaciones
   para todas las señales de un locutor.
+
+  <img src="imgs/lp_GMM.png" width="600" align="center">
+  <img src="imgs/lpcc_GMM.png" width="600" align="center">
+  <img src="imgs/mfcc_GMM.png" width="600" align="center">
   
   + Indique **todas** las órdenes necesarias para obtener las gráficas a partir de las señales 
     parametrizadas.
     ```.sh
-    plot_gmm_feat -x 2 -y 3 -g blue work/gmm/lp/SES007.gmm work/lp/BLOCK00/SES007/*
+    plot_gmm_feat -x 2 -y 3 -g blue work/gmm/lp/SES022.gmm work/lp/BLOCK00/SES022/*
     ```
   + ¿Cuál de ellas le parece que contiene más información?
   Contiene más información la parametrización con una distribución con menor forma de  recta posible (la LPCC y MFCC).
@@ -106,6 +110,8 @@ Complete el código necesario para entrenar modelos GMM.
 - Inserte una gráfica que muestre la función de densidad de probabilidad modelada por el GMM de un locutor
   para sus dos primeros coeficientes de MFCC.
 
+<img src="imgs/mfcc01.png" width="600" align="center">
+<img src="imgs/mfcc01comp.png" width="600" align="center">
 
 - Inserte una gráfica que permita comparar los modelos y poblaciones de dos locutores distintos (la gŕafica
   de la página 20 del enunciado puede servirle de referencia del resultado deseado). Analice la capacidad
@@ -122,7 +128,7 @@ Complete el código necesario para realizar reconociminto del locutor y optimice
   
   |                        | LP   | LPCC | MFCC |
   |------------------------|:----:|:----:|:----:|
-  | Error rate             |  | 0.64% | 1.02% |
+  | Error rate             | 11.34% | 0.64% | 1.02% |
 
 ### Verificación del locutor.
 
