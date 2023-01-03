@@ -95,9 +95,11 @@ Para calcular los coeficientes cepstrales en escala Mel (MFCC), de forma similar
 
   |                        | LP   | LPCC | MFCC |
   |------------------------|:----:|:----:|:----:|
-  | &rho;<sub>x</sub>[2,3] | -0.7680 |  |      |
+  | &rho;<sub>x</sub>[2,3] | -0.683205 | 0.23599 | 0.360561 |
   
   + Compare los resultados de <code>pearson</code> con los obtenidos gráficamente.
+  
+  Podemos comprobar que en el LPCC y el MFCC, los coeficientes 2 y 3 tienen menor correlación que en el LP, ya que 
   
 - Según la teoría, ¿qué parámetros considera adecuados para el cálculo de los coeficientes LPCC y MFCC?
 
@@ -128,7 +130,7 @@ Complete el código necesario para realizar reconociminto del locutor y optimice
   
   |                        | LP   | LPCC | MFCC |
   |------------------------|:----:|:----:|:----:|
-  | Error rate             | 11.34% | 0.64% | 1.02% |
+  | Error rate             | 8.79% | 0.64% | 0.89% |
 
 ### Verificación del locutor.
 
@@ -139,6 +141,13 @@ Complete el código necesario para realizar verificación del locutor y optimice
   pérdidas, y el score obtenido usando la parametrización que mejor resultado le hubiera dado en la tarea
   de reconocimiento.
  
+|                        | LP   | LPCC | MFCC |
+|------------------------|:----:|:----:|:----:|
+| Umbral óptimo          | 0.528945274457899 | 0.241348203032004 |  |
+| Falsas alamras         | 20/1000=0.0200 | 6/1000=0.0060 |  |
+| Pérdidas               | 97/250=0.3880 | 11/250=0.0440 |  |
+| Score                  | 56.8 | 9.8 |  |
+
 ### Test final
 
 - Adjunte, en el repositorio de la práctica, los ficheros `class_test.log` y `verif_test.log` 
