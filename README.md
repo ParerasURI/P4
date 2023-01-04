@@ -143,10 +143,10 @@ Complete el código necesario para realizar verificación del locutor y optimice
  
 |                        | LP   | LPCC | MFCC |
 |------------------------|:----:|:----:|:----:|
-| Umbral óptimo          | 0.528945274457899 | 0.241348203032004 |  |
-| Falsas alamras         | 20/1000=0.0200 | 6/1000=0.0060 |  |
-| Pérdidas               | 97/250=0.3880 | 11/250=0.0440 |  |
-| Score                  | 56.8 | 9.8 |  |
+| Umbral óptimo          | 0.597803931206509 | 0.321384893338601 |  0.616029309702996 |
+| Falsas alamras         | 17/1000=0.0170 | 3/1000=0.0060 | 7/1000=0.0070 |
+| Pérdidas               | 110/250=0.4400 | 15/250=0.0440 | 35/250=0.1400 |
+| Score                  | 59.3 | 8.7 | 20.3 |
 
 ### Test final
 
